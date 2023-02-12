@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- BootsTrab -->
+    <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <!--// BootsTrab // -->
+    
+    <!-- axios  -->
+    <script src="./node_modules/axios/dist/axios.min.js"></script>
+    <!--// axios  //-->
+    
+    <!-- style -->
+    <link rel="stylesheet" href="style.css">
+    <!--// style //-->
+    <title>My Post</title>
+</head>
+<body style="background-color: rgb(243, 242, 242) !important;">
+    
+    <!-- loader -->
+    <div id="loader" style="position: fixed; top:50% ;left:50%;transform: translate(-50%,-50%);z-index: 99999;visibility: hidden;">
+        <div class="lds-ellipsis">
+            <div></div><div></div><div></div><div></div>
+        </div>
+    </div>
+    <!-- loader -->
+
+
+    <!-- modals -->
+        <!-- modal login -->
+            <div class="modal fade" id="login" tabindex="-1" aria-labelledby="login_Modal" aria-hidden="true">
+                <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="login_Modal">Login</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                    <form>
+                        <div class="mb-3">
+                        <label for="recipient-name" class="col-form-label">UserName:</label>
+                        <input type="email" class="form-control" id="UserName">
+                        </div>
+                        <div class="mb-3">
+                        <label for="message-text" class="col-form-label">Password:</label>
+                        <input type="Password" class="form-control" id="Password" >
+                        </div>
+                    </form>
+                    </div>
+                    <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary cursor" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary cursor" onclick="login()">Login</button>
+                    </div>
+                </div>
+                </div>
+            </div>
+        <!--// modal login //-->
+        <!-- modal Register -->
+            <div class="modal fade" id="Register" tabindex="-1" aria-labelledby="Register_Modal" aria-hidden="true">
+                <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="Register_Modal">Register</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="mb-3">
+                                <label for="recipient-name" class="col-form-label">Name:</label>
+                                <input type="text" class="form-control" id="reg_name">
+                            </div>
+                            <div class="mb-3">
+                                <label for="recipient-name" class="col-form-label">UserName:</label>
+                                <input type="email" class="form-control" id="reg_UserName">
+                            </div>
+                            <div class="mb-3">
+                                <label for="message-text" class="col-form-label">Password:</label>
+                                <input type="Password" class="form-control" id="reg_Password" >
+                            </div>
+                            <div class="mb-3">
+                                <label for="message-text" class="col-form-label">Image:</label>
+                                <input type="file" class="form-control" id="reg_file" >
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary cursor" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary cursor" onclick="Register()">Register</button>
+                    </div>
+                </div>
+                </div>
+            </div>
+        <!--// modal Register //-->
+            <!-- modal addPost -->
+                <div class="modal fade" id="addPoset" tabindex="-1" aria-labelledby="addPoset_Modal" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="title_post_edit">Add New Post</h1>
+                                <input type="hidden" value ="" id="btn_hidden"> 
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form>
+                                    <div class="mb-3">
+                                        <label for="recipient-name" class="col-form-label">Title:</label>
+                                        <input type="text" class="form-control" id="Title_Post">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="recipient-name" class="col-form-label">Body:</label>
+                                        <textarea name="" id="Body_Post" style="width: 100%; height: 100px; resize: none; border-radius: 6px;padding: 2%; outline: none;"></textarea>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="message-text" class="col-form-label">File:</label>
+                                        <input type="file" class="form-control" id="File_Post" >
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary cursor" data-bs-dismiss="modal">Close</button>
+                                <button id="btn_UC" type="button" class="btn btn-primary cursor" onclick="CreateNewPost()">Create</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <!--//modal addPost//-->
+    <!--// modals //-->
+
+    <!-- alert -->
+        <!-- alert login success -->
+            <div class="alert alert-success " role="alert" id="alert_login_success">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class=" bi bi-check-circle" viewBox="0 0 16 16">
+                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                    <path d="M10.97 4.97a.235.235 0 0 0-.02.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05z"/>
+                </svg> 
+                <span class="mx-2">Login success</span>
+            </div>
+        <!--// alert login success // -->
+        <!-- alert register success -->
+            <div class="alert alert-success " role="alert" id="alert_register_success">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class=" bi bi-check-circle" viewBox="0 0 16 16">
+                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                    <path d="M10.97 4.97a.235.235 0 0 0-.02.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05z"/>
+                </svg> 
+                <span class="mx-2">Register success</span>
+            </div>
+        <!--// alert login success // -->
+
+        <!-- alert logout danger -->
+            <div class="alert alert-danger " role="alert" id="alert_logout_danger">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class=" bi bi-check-circle" viewBox="0 0 16 16">
+                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                    <path d="M10.97 4.97a.235.235 0 0 0-.02.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05z"/>
+                </svg> 
+                <span class="mx-2">Logout success</span>
+            </div>
+        <!--// alert logout danger // -->
+        <!-- alert addPost success -->
+            <div class="alert alert-success " role="alert" id="alert_addPost_success">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class=" bi bi-check-circle" viewBox="0 0 16 16">
+                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                    <path d="M10.97 4.97a.235.235 0 0 0-.02.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05z"/>
+                </svg> 
+                <span class="mx-2">Add New Post Success</span>
+            </div>
+        <!--//  alert addPost success // -->
+        <!-- alert addPost danger -->
+            <div class="alert alert-danger " role="alert" id="alert_addPost_error_success">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class=" bi bi-check-circle" viewBox="0 0 16 16">
+                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                    <path d="M10.97 4.97a.235.235 0 0 0-.02.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05z"/>
+                </svg> 
+                <span class="mx-2" id="error"></span>
+            </div>
+        <!--// alert addPost danger // -->
+        <!-- alert addPost success -->
+            <div class="alert alert-success " role="alert" id="alert_edit_success">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class=" bi bi-check-circle" viewBox="0 0 16 16">
+                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                    <path d="M10.97 4.97a.235.235 0 0 0-.02.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05z"/>
+                </svg> 
+                <span class="mx-2" id="error">Edit success</span>
+            </div>
+        <!--// alert addPost success // -->
+    <!--// alert // -->
+
+
+    <!-- addPostIcon -->
+        <div class="addPostIcon cursor" id="addPostIcon" onclick="createClicked()"  >
+            <b style="font-size:40px;margin-bottom: 6%;">+</b>
+        </div>
+    <!--// addPostIcon //-->
+
+    <!-- navBar -->
+    <div class="container " >
+        <nav  class="pt-3 shadow-lg rounded navbar col-lg-7 navbar-expand-lg bg-body-tertiary container">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="./home.html">My Post</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse " id="navbarSupportedContent" >
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="./home.html">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" onclick="profileClicked()" >Profile</a>
+                        </li>
+                    </ul>
+                    <div class="d-flex justify-content-end" >
+                        <button type="button" class="btn mx-2 btn-outline-success" data-bs-toggle="modal" data-bs-target="#login" id="login_nav">Login</button>
+                        <button type="button" class="btn btn-success" id="Register_nav"data-bs-toggle="modal" data-bs-target="#Register">Register</button>
+                    </div>
+                    <div class="d-flex justify-content-end" >
+                        <button type="button" class="btn mx-2 btn-danger " onclick="logOut()" id="LogOut_nav">LogOut</button>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </div>
+    <!--// navBar //-->
+    <slid >
+        <div class="slide_imag">
+            <img id="user_image_slid" src="" alt="">
+            <h3 id="user_name_slid"></h3>
+        </div>
+    </slid>
+    <!-- posts -->
+    <div class="container">
+        <div  id="posts" class="col-lg-7 mt-4 posts container">
+            <!-- Post -->
+                <!-- <div class="post card mb-3 shadow-lg ">
+                    <div class="card-header">
+                        <img src="./image/user-icon.png" width="25px" alt="">
+                        <b>@yazan</b>
+                    </div>
+                    <div class="card-body">
+                        <img src="./image/cabin-forest-river-digital-art-298.jpg" width="100%" height="max-content" class="rounded mb-3"  alt="">
+                        <p style="opacity: .9; font-size: 15px;">556</p>
+                        <h5 class="card-title">Hello World </h5> 
+                        <p class="card-text">
+                            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Molestiae, laborum? Quidem esse, eveniet quos perferendis sint ea, consectetur earum deserunt placeat doloremque, 
+                            omnis in! Eligendi nobis explicabo asperiores unde ut!
+                        </p>
+                        <hr>
+
+                        <div class="comment"  >
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square mb-1 mr-1"  viewBox="0 0 16 16">
+                                <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                                <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
+                            </svg>
+                            <span class="fw-bold" ">(3) comment</span>
+                        </div>
+
+                    </div>
+                </div> -->
+            <!--// Post //-->
+        </div>
+    </div>
+    <!--// posts // -->
+
+</body>
+<script src="./main.js"></script>
+<script>
+    GetPostsAPI()
+    let CurrantPage = 1
+    let last_page = 1
+    
+    function GetPostsAPI(reload =true,page = 1)
+    {
+        loaderToggle()
+        axios.get(`https://tarmeezacademy.com/api/v1/posts?limit=2&page=${page}`)
+        .then(response => {
+
+            let Posts = response.data.data
+            last_page =response.data.meta.last_page;
+           
+            
+            if(reload)
+            {
+                document.getElementById("posts").innerHTML ="" 
+            }
+            for( let post of Posts)
+            {   
+                // JSON.parse(localStorage.getItem("user-info")) != null || JSON.parse(localStorage.getItem("user-info")).id == post.author.id
+                let thereToken = localStorage.getItem("token")
+                let btnvontentedit= ``
+                let btnvontentdel= ``
+                if(thereToken)
+                {
+                    let IsMyPost = JSON.parse(localStorage.getItem("user-info")).id === post.author.id ;
+                    if(IsMyPost)
+                    {
+                        btnvontentedit =`<button onclick="editClicked('${encodeURIComponent(JSON.stringify(post))}')" id="btn_edit"class="btn btn-secondary p-2 m-1 " style="float:right;width:60px; height:40px ;out-line:none;border:none" >Edit</button>`
+                        btnvontentdel =`<button onclick="deleteClicked('${encodeURIComponent(JSON.stringify(post))}')" id="btn_del"class="btn btn-danger p-2 m-1 " style="float:right;width:60px; height:40px ;out-line:none;border:none" >Delete</button>`
+                    }
+                    else{
+                        btnvontentedit=``
+                        btnvontentdel=``
+                    }
+                }
+                let content = 
+                `
+                    <!-- Post -->
+                        <div class="post card mb-3 shadow-lg " >
+                            <div class="card-header">
+                                <span style="cursor:pointer" onclick="GoProfile(${post.author.id})">
+                                    <img src="${post.author.profile_image}" class="rounded-circle" width="25px" height="25px" alt="">
+                                    <b>${post.author.name}</b>
+                                </span>
+                                ${btnvontentdel}
+                                ${btnvontentedit}
+
+                            </div>
+                          
+                            <div class="card-body" onclick="postClicked(${post.id})">
+                                <img src="${post.image}" width="100%" height="max-content" class="rounded "  alt="">
+                                <p style="opacity: .9; font-size: 15px;" class="mx-1">${post.created_at}</p>
+                                <h5 class="card-title">${post.title} </h5> 
+                                <p class="card-text">
+                                ${post.body}
+                                </p>
+                                <hr>
+
+                                <div class="comment" ">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square mb-1 mr-1"  viewBox="0 0 16 16">
+                                        <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                                        <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
+                                    </svg>
+                                    <span class="fw-bold mx-2">(${post.comments_count}) comment</span>
+                                
+                                </div>
+
+                            </div>
+                        </div>
+                <!--// Post //-->
+                `
+                document.getElementById("posts").innerHTML += content
+            }
+            
+        })  .finally(()=>{
+            loaderToggle(false)
+        })
+    }
+   
+    window.addEventListener('scroll',()=>{
+    // console.log(window.scrollY) //scrolled from top
+    // console.log(window.innerHeight) //visible part of screen
+    // console.log(document.documentElement.scrollHeight) //visible part of screen
+   
+    if(window.scrollY + window.innerHeight +1 >= document.documentElement.scrollHeight && CurrantPage <= last_page){
+        CurrantPage++
+        GetPostsAPI(false,CurrantPage)
+    }
+    })
+    function GoProfile(id){
+        let userId = id
+        window.location=`profile.html?userId=${userId}`
+    }
+  
+</script>
+</html>
+
+
+
+
+
+

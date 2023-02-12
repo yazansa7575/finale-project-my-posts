@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <!-- BootsTrab -->
+        <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+        <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
+        <!--// BootsTrab // -->
+        
+        <!-- axios  -->
+        <script src="./node_modules/axios/dist/axios.min.js"></script>
+        <!--// axios  //-->
+        
+        <!-- style -->
+        <link rel="stylesheet" href="style.css">
+        <!--// style //-->
+        <title>My Post</title>
+    </head>
+    <body style="background-color: rgb(243, 242, 242) !important;">
+        <!-- loader -->
+            <div id="loader" style="position: fixed; top:50% ;left:50%;transform: translate(-50%,-50%);z-index: 99999;visibility: hidden;">
+                <div class="lds-ellipsis">
+                    <div></div><div></div><div></div><div></div>
+                </div>
+            </div>
+        <!-- loader -->
+        <!-- modals -->
+            <!-- modal login -->
+                <div class="modal fade" id="login" tabindex="-1" aria-labelledby="login_Modal" aria-hidden="true">
+                    <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="login_Modal">Login</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                        <form>
+                            <div class="mb-3">
+                            <label for="recipient-name" class="col-form-label">UserName:</label>
+                            <input type="email" class="form-control" id="UserName">
+                            </div>
+                            <div class="mb-3">
+                            <label for="message-text" class="col-form-label">Password:</label>
+                            <input type="Password" class="form-control" id="Password" >
+                            </div>
+                        </form>
+                        </div>
+                        <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary cursor" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary cursor" onclick="login()">Login</button>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+            <!--// modal login //-->
+            <!-- modal Register -->
+                <div class="modal fade" id="Register" tabindex="-1" aria-labelledby="Register_Modal" aria-hidden="true">
+                    <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="Register_Modal">Register</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form>
+                                <div class="mb-3">
+                                    <label for="recipient-name" class="col-form-label">Name:</label>
+                                    <input type="text" class="form-control" id="reg_name">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="recipient-name" class="col-form-label">UserName:</label>
+                                    <input type="email" class="form-control" id="reg_UserName">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="message-text" class="col-form-label">Password:</label>
+                                    <input type="Password" class="form-control" id="reg_Password" >
+                                </div>
+                                <div class="mb-3">
+                                    <label for="message-text" class="col-form-label">Image:</label>
+                                    <input type="file" class="form-control" id="reg_file" >
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary cursor" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary cursor" onclick="Register()">Register</button>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+            <!--// modal Register //-->
+        <!--// modals //-->
+
+        <!-- alert -->
+            <!-- alert login success -->
+                <div class="alert alert-success " role="alert" id="alert_login_success">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class=" bi bi-check-circle" viewBox="0 0 16 16">
+                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                        <path d="M10.97 4.97a.235.235 0 0 0-.02.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05z"/>
+                    </svg> 
+                    <span class="mx-2">Login success</span>
+                </div>
+            <!--// alert login success // -->
+            <!-- alert register success -->
+                <div class="alert alert-success " role="alert" id="alert_register_success">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class=" bi bi-check-circle" viewBox="0 0 16 16">
+                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                        <path d="M10.97 4.97a.235.235 0 0 0-.02.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05z"/>
+                    </svg> 
+                    <span class="mx-2">Register success</span>
+                </div>
+            <!--// alert register success // -->
+            <!-- alert logout danger -->
+                <div class="alert alert-danger " role="alert" id="alert_logout_danger">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class=" bi bi-check-circle" viewBox="0 0 16 16">
+                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                        <path d="M10.97 4.97a.235.235 0 0 0-.02.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05z"/>
+                    </svg> 
+                    <span class="mx-2">Logout success</span>
+                </div>
+            <!--// alert logout danger // -->
+            <!-- alert add comment success -->
+                <div class="alert alert-success " role="alert" id="alert_add_comment_successfully">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class=" bi bi-check-circle" viewBox="0 0 16 16">
+                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                        <path d="M10.97 4.97a.235.235 0 0 0-.02.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05z"/>
+                    </svg> 
+                    <span class="mx-2">alert add comment successfully</span>
+                </div>
+            <!--// alert add comment successfully // -->
+    
+        <!--// alert // -->
+
+        <!-- navBar -->
+            <div class="container " >
+                <nav  class="pt-3 shadow-lg rounded navbar col-lg-7 navbar-expand-lg bg-body-tertiary container">
+                    <div class="container-fluid">
+                        <a class="navbar-brand" href="./home.html">My Post</a>
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse " id="navbarSupportedContent" >
+                            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                                <li class="nav-item">
+                                    <a class="nav-link active" aria-current="page" href="./home.html">Home</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" onclick="profileClicked()" >Profile</a>
+                                </li>
+                            </ul>
+                            <div class="d-flex justify-content-end" >
+                                <button type="button" class="btn mx-2 btn-outline-success" data-bs-toggle="modal" data-bs-target="#login" id="login_nav">Login</button>
+                                <button type="button" class="btn btn-success" id="Register_nav"data-bs-toggle="modal" data-bs-target="#Register">Register</button>
+                            </div>
+                            <div class="d-flex justify-content-end" >
+                                <button type="button" class="btn mx-2 btn-danger " onclick="logOut()" id="LogOut_nav">LogOut</button>
+                            </div>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+        <!--// navBar //-->
+    
+        <!-- slid -->
+            <slid >
+                <div class="slide_imag">
+                    <img id="user_image_slid" src="" alt="">
+                    <h3 id="user_name_slid"></h3>
+                </div>
+            </slid>
+        <!--// slid //-->
+
+       <div class="s"id="ss"></div>
+
+
+
+        <div class="container" id="post_deitels">
+            <!-- user's post -->
+                <div class="user'spost mt-4 mb-4 container col-lg-7">
+                    <h1>
+                        <span>
+                            yazan
+                        </span>
+                        Post
+                    </h1>
+                </div>
+            <!--// user's post //-->
+            <!-- card  -->
+                <div class=" card mb-3 shadow-lg  container col-lg-7">
+                    <div class="card-header">
+                        <img src="./image/user-icon.png" width="25px" alt="">
+                        <b>@yazan</b>
+                    </div>
+                    <div class="card-body" style="cursor:default;">
+                        <img src="./image/cabin-forest-river-digital-art-298.jpg" width="100%" height="max-content" class="rounded mb-3"  alt="">
+                        <p style="opacity: .9; font-size: 15px;">556</p>
+                        <h5 class="card-title">Hello World </h5> 
+                        <p class="card-text">
+                            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Molestiae, laborum? Quidem esse, eveniet quos perferendis sint ea, consectetur earum deserunt placeat doloremque, 
+                            omnis in! Eligendi nobis explicabo asperiores unde ut!
+                        </p>
+                        <hr>
+                        <div class="comment"  >
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square mb-1 mr-1"  viewBox="0 0 16 16">
+                                <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                                <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
+                            </svg>
+                            <span class="fw-bold" >(3) comment</span>
+                        </div>
+                        
+                    </div>
+                    <div class="commentShow">
+                    <!-- comments -->
+                        <!-- comment -->
+                            <div class="commentShow mt-1 mb-1 p-2 rounded " style="background-color:rgb(227, 226, 226) ;"  >
+                                <!-- imag + name  -->
+                                    <div class="image-user name-user">
+                                        <img class="rounded-circle " style="width: 30px; height:30px;" src="./image/cabin-forest-river-digital-art-298.jpg " alt="">
+                                        <b>
+                                            yazan
+                                        </b>
+                                    </div>
+                                <!--// imag + name  //-->
+                                <!-- bodyComment -->
+                                <div class="bodyComment"> 
+                                    <hr class="m-1">
+                                        <p class="p-1">
+                                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime soluta recusandae accusantium ut impedit modi. Maiores laborum aspernatur quo harum quasi facilis, tenetur quae at suscipit molestiae repudiandae tempore hic.
+                                        </p>
+                                    </div> 
+                                <!--// bodyComment //-->
+
+                            </div>
+                        <!--// comment //-->
+                    <!--// comments // -->
+                    </div>
+                    <div class="writeComm">
+                        <div class="form d-flex align-itmes-center justify-content-sm-between  " >
+                            <input type="text"maxlength="100"  placeholder="Enter your comment ">
+                            <input type="submit" value="Comment" onclick="addComm()" >
+                        </div>
+                    </div>
+                </div>  
+            <!--// card  //-->
+
+  
+        </div>
+
+    </body>
+    <script src="./main.js"></script>
+    <script>
+        // get id post //
+        const urlIdParams = new URLSearchParams(window.location.search)
+        const id = urlIdParams.get("id")
+        // get id post //
+
+        document.getElementById("post_deitels").innerHTML="";
+
+        reqAxiosForPostDetails()
+
+        function reqAxiosForPostDetails()
+            {
+                loaderToggle()
+                axios.get(`https://tarmeezacademy.com/api/v1/posts/${id}`)
+                .then(response => {
+                    let post = response.data.data
+                    localStorage.setItem("post-details",JSON.stringify(post))
+                    const author_name = post.author.username 
+                    const profile_image = post.author.profile_image 
+                    const image = post.image
+                    const title = post.title
+                    const body = post.body
+
+                    document.getElementById("post_deitels").innerHTML="";
+                    document.getElementById("post_deitels").innerHTML+=
+                    `
+                        <!-- user's post -->
+                                <div class="user'spost mt-4 mb-4 container col-lg-7">
+                                    <h1>
+                                        <span>
+                                            ${author_name}'s
+                                        </span>
+                                        Post
+                                    </h1>
+                                </div>
+                        <!--// user's post //-->
+                        <!-- card  -->
+                            <div class=" card mb-3 shadow-lg  container col-lg-7">
+                                <div class="card-header">
+                                    <img src="${profile_image}" width="25px" alt="">
+                                    <b>${author_name}</b>
+                                </div>
+                                <div class="card-body" style="cursor:default;">
+                                    <img src="${image}" width="100%" height="max-content" class="rounded mb-3"  alt="">
+                                    <p style="opacity: .9; font-size: 15px;">556</p>
+                                    <h5 class="card-title">${title} </h5> 
+                                    <p class="card-text">
+                                        ${body}
+                                    </p>
+                                    <hr>
+                                    <div class="comment">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square mb-1 mr-1"  viewBox="0 0 16 16">
+                                            <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                                            <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
+                                        </svg>
+                                        <span class="fw-bold" >(${post.comments_count}) comment</span>
+                                    </div>
+                                    
+                                </div>
+                                <div class="commentShow">
+                                <!-- comments -->
+                                    <div id="containerComment">
+
+                                    </div>
+                                <!--// comments // -->
+                                </div>
+                                <div class="writeComm" id="writeComment">
+                                    <div class="form d-flex align-itmes-center justify-content-sm-between  " >
+                                        <input type="text"maxlength="100"  placeholder="Enter your comment " id="comment">
+                                        <input type="submit" value="Comment" onclick="addComm()" >
+                                    </div>
+                                    <div>
+                                        <p style="color:red;margin:2% 0 0 0 ;padding:0 " id="errorAlert"></p>
+                                    </div>
+                                </div>
+                            </div>  
+                        <!--// card  //-->
+                    `;
+                    showCommApi(post)
+                    
+                }).finally(()=>{
+                loaderToggle(false)
+        })
+    }
+            
+        function addComm()
+        {
+            
+            const comment_add = document.getElementById("comment").value
+            const url= `https://tarmeezacademy.com/api/v1/posts/${id}/comments`
+            loaderToggle()
+            axios.post(url,
+            {
+                "body": `${comment_add}`
+            },
+            {
+                headers:{
+                    "Authorization":`Bearer ${localStorage.getItem("token")}` 
+                }
+            })
+            .then((response=>{
+                comment_add.value=""
+                reqAxiosForPostDetails()
+                document.getElementById("alert_add_comment_successfully").style.display="block"
+                
+            
+            }))
+            .catch((e)=>{
+                const error = e.response.data.message;
+                document.getElementById("errorAlert").innerHTML=error;
+            })
+            .finally(()=>{
+            loaderToggle(false)
+            })
+        }
+            
+        
+        function showCommApi(post){
+            let comments = post.comments
+            document.getElementById("containerComment").innerHTML="";
+            for(comment of comments)
+            {
+                const bodyCom = comment.body;
+                const author_name = comment.author.username;
+                const author_profile_image = comment.author.profile_image;
+                const content = 
+                `
+                <!-- comment -->
+                    <div class="commentShow mt-1 mb-1 p-2 rounded " style="background-color:rgb(227, 226, 226) ;"  >
+                        <!-- imag + name  -->
+                            <div class="image-user name-user">
+                                <img class="rounded-circle " style="width: 30px; height:30px;" src="${author_profile_image} " alt="">
+                                <b>
+                                    ${author_name}
+                                </b>
+                            </div>
+                        <!--// imag + name  //-->
+                        <!-- bodyComment -->
+                        <div class="bodyComment"> 
+                            <hr class="m-1">
+                                <p class="p-1">
+                                    ${bodyCom}
+                                </p>
+                            </div> 
+                        <!--// bodyComment //-->
+
+                    </div>
+                <!--// comment //-->
+                ` 
+                document.getElementById("containerComment").innerHTML+=content;
+            }
+            window.scrollTo(0, document.body.scrollHeight);
+        }
+        setInterval(()=>{
+        let writeComment = document.getElementById("writeComment")
+        if(localStorage.getItem("token") == null) //show none write comment
+        {
+            writeComment.style.display="none"
+        }
+        else{
+            writeComment.style.display="block"
+            
+        }
+    },400)
+    </script>
+</html>
